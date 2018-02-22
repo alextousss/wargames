@@ -1,6 +1,7 @@
 from random import randrange
 import random
 import math
+import time
 import numpy as np
 from bullet import Coord
 from fightingentity import FightingEntity
@@ -8,14 +9,14 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 2
-        self.layers_size = [7]
-
+        self.layers_size = [9,7]
+        self.bias_per_layer = 1
 
         self.weights = []
 
         for i, layer in enumerate(self.layers_size):
-            if(i == 0): self.weights.append(np.random.randn(self.input_layer_size, layer))
-            else:       self.weights.append(np.random.randn(self.layers_size[i-1], layer))
+            if(i == 0): self.weights.append(np.random.randn(self.input_layer_size + self.bias_per_layer, layer))
+            else:       self.weights.append(np.random.randn(self.layers_size[i-1] + self.bias_per_layer, layer))
 
         print(self.weights)
         self.nearest_opponent_distance = 0
@@ -25,9 +26,16 @@ class NeuralNetwork:
 
     def forwardPropagation(self, X):
         for i, w in enumerate(self.weights):
-            if(i == 0): z = np.dot(X, w)
+            if(i == 0):
+                r = X
+                for y in range(self.bias_per_layer):
+                    r = np.append(r,1)
+                z = np.dot(r, w)
             else:
-                a = self.sigmoid(z)
+                z2 = z
+                for y in range(self.bias_per_layer):
+                    z2 = np.append(z2,1)
+                a = self.sigmoid(z2)
                 z = np.dot(a, w)
 
         y_hat = self.sigmoid(z)
@@ -38,8 +46,8 @@ class NeuralNetwork:
     def mutate(self, mutation_factor):
         weight_number = 0
         for i, layer in enumerate(self.layers_size):
-            if(i == 0): weight_number += self.input_layer_size * layer
-            else:       weight_number += self.layers_size[i-1] * layer
+            if(i == 0): weight_number += (self.input_layer_size + self.bias_per_layer) * layer
+            else:       weight_number += (self.layers_size[i-1] + self.bias_per_layer) * layer
         proba = 1/weight_number
 
         for w in self.weights:
@@ -86,11 +94,11 @@ class Soldier(FightingEntity):
                 if(sol.team == self.team):
                     if(self.nearest_friend_distance == 0 or self.nearest_friend_distance > distance):
                         self.nearest_friend_distance = distance
-                        self.nearest_friend_angle = math.fabs(angle)
+                        self.nearest_friend_angle = angle
                 else:
                     if(self.nearest_opponent_distance == 0 or self.nearest_opponent_distance > distance):
                         self.nearest_opponent_distance = distance
-                        self.nearest_opponent_angle = math.fabs(angle)
+                        self.nearest_opponent_angle = angle
 
 
     def mutate(self, mutation_factor):
@@ -106,7 +114,7 @@ class Soldier(FightingEntity):
         FightingEntity.update(self)
         neural_input = np.array([#self.nearest_friend_angle / 180, \
                                 #self.nearest_friend_distance / 500, \
-                                (self.nearest_opponent_angle )/ 90, \
+                                (self.nearest_opponent_angle )/ 45, \
                                 self.nearest_opponent_distance / 150
                                 ])
 
