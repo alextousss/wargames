@@ -50,7 +50,6 @@ class Simulation:
         generation = 0
         while True:
             print("Generation number : {}".format(generation))
-            print("Press (G) to enable graphics (disables multithreading)")
             for sol in self.soldiers:
                 sol.kills = 0
             fights = []
@@ -74,13 +73,13 @@ class Simulation:
                         if(not self.graphics):
                             p = Process(target=self.simulateOneGame, args=([copy.deepcopy(sol),copy.deepcopy(opponent)], que, ))
                             p.start()
+                            fights.append([p,que,sol,opponent,True])
 
                         else:
                             self.simulateOneGame([copy.deepcopy(sol),copy.deepcopy(opponent)], que)
-
-                        fights.append([p,que,sol,opponent,self.graphics])
-                        #We have to store the graphics state, because otherwise the next block of instructions would do a join() on a process that doesn't exists
-
+                            fights.append([p,que,sol,opponent,False])
+                            #We store the fact that we didn't used the threading module on this fight, so the next set of instructions
+                            #dont do a p.join() when the thread wasn't created
 
 
 
@@ -93,11 +92,10 @@ class Simulation:
                 kills_sol, kills_opponent = q.get()
                 sol.kills += kills_sol
                 opponent.kills += kills_opponent
-                if(not f[4]): p.join()
+                if(f[4]): p.join()
 
 
 
-                        #sol.kills, opponent.kills = self.simulateOneGame([copy.deepcopy(sol),copy.deepcopy(opponent)])
             print("")
             print("--------- Generation overview ---------- ")
 
