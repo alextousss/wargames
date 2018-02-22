@@ -8,36 +8,45 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 2
-        self.hidden_layer_size = 8
-        self.output_layer_size = 7
+        self.layers_size = [5,5,7]
 
-        self.W1 = np.random.randn(self.input_layer_size, self.hidden_layer_size)
-        self.W2 = np.random.randn(self.hidden_layer_size, self.output_layer_size)
 
+        self.weights = []
+
+        for i, layer in enumerate(self.layers_size):
+            if(i == 0): self.weights.append(np.random.randn(self.input_layer_size, layer))
+            else:       self.weights.append(np.random.randn(self.layers_size[i-1], layer))
+
+        print(self.weights)
         self.nearest_opponent_distance = 0
         self.nearest_opponent_angle = 0
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
 
     def forwardPropagation(self, X):
-        self.z2 = np.dot(X, self.W1)
-        self.a2 = self.sigmoid(self.z2)
-        self.z3 = np.dot(self.a2, self.W2)
-        y_hat = self.sigmoid(self.z3)
+        for i, w in enumerate(self.weights):
+            if(i == 0): z = np.dot(X, w)
+            else:
+                a = self.sigmoid(z)
+                z = np.dot(a, w)
+
+        y_hat = self.sigmoid(z)
+
         return y_hat
 
 
     def mutate(self, mutation_factor):
-        proba_w1 = 1/(self.input_layer_size * self.hidden_layer_size)
-        proba_w2 = 1/(self.hidden_layer_size * self.output_layer_size)
-        mutate = 0
-        for (x,y), el in np.ndenumerate(self.W1):
-            if(random.random() < proba_w1):
-                self.W1[x,y] = random.uniform(-2.0,2.0)
+        weight_number = 0
+        for i, layer in enumerate(self.layers_size):
+            if(i == 0): weight_number += self.input_layer_size * layer
+            else:       weight_number += self.layers_size[i-1] * layer
+        proba = 1/weight_number
 
-        for (x,y), el in np.ndenumerate(self.W2):
-            if(random.random() < proba_w2):
-                self.W2[x,y] = random.uniform(-2.0,2.0)
+        for w in self.weights:
+            for (x,y), el in np.ndenumerate(w):
+                if(random.random() < proba):
+                    w[x,y] = random.uniform(-2.0,2.0)
+
 
 
 
@@ -103,7 +112,7 @@ class Soldier(FightingEntity):
 
 
         neural_output = self.neurons.forwardPropagation(neural_input)
-        if(neural_output[0] > 0.25): self.shooting = True
+        if(neural_output[0] > 0): self.shooting = True
         else:                       self.shooting = False
 
         move = Coord(0,0)
