@@ -112,7 +112,7 @@ class Simulation:
             ponderated_soldiers = []
 
             for sol in self.soldiers:
-                for i in range(sol.kills **3): ponderated_soldiers.append(sol)
+                for i in range(sol.kills ** 4): ponderated_soldiers.append(sol)
             if(len(ponderated_soldiers) != 0):
                 for i in range(self.soldiers_number):
                     if(len(ponderated_soldiers) != 0):
