@@ -50,6 +50,7 @@ class Simulation:
         generation = 0
         while True:
             print("Generation number : {}".format(generation))
+            print("Press (G) to enable graphics (disables multithreading)")
             for sol in self.soldiers:
                 sol.kills = 0
             fights = []
