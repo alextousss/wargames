@@ -8,7 +8,7 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 2
-        self.layers_size = [5,5,7]
+        self.layers_size = [7]
 
 
         self.weights = []
@@ -107,7 +107,8 @@ class Soldier(FightingEntity):
         neural_input = np.array([#self.nearest_friend_angle / 180, \
                                 #self.nearest_friend_distance / 500, \
                                 (self.nearest_opponent_angle )/ 90, \
-                                self.nearest_opponent_distance / 1500])
+                                self.nearest_opponent_distance / 150
+                                ])
 
 
 
