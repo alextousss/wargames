@@ -14,7 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 '''
-#Code is not mine, coming from : http://home.wlu.edu/~levys/software/kbhit.py
+# Code is not mine, coming from : http://home.wlu.edu/~levys/software/kbhit.py
 import os
 
 # Windows

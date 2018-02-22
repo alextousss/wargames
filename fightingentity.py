@@ -15,30 +15,33 @@ class FightingEntity:
         self.last_hurter = self
         self.updates_since_last_shot = 0
 
-
     def setTarget(self, target):
         self.target = target
 
-    def moveCartesian(self,x,y):
+    def moveCartesian(self, x, y):
         self.position_x += x
         self.position_y += y
 
     def move(self, x, y):
         max_val = 1
         min_val = -1
-        if( x > max_val): x = max_val
-        elif( x < min_val): x = min_val
-        if( y > max_val): y = max_val
-        elif( y <-min_val): y = min_val
+        if(x > max_val):
+            x = max_val
+        elif(x < min_val):
+            x = min_val
+        if(y > max_val):
+            y = max_val
+        elif(y < min_val):
+            y = min_val
 
         angle = math.radians(self.angle)
-        self.position_x +=  math.cos(angle) * y
+        self.position_x += math.cos(angle) * y
         self.position_y += -math.sin(angle) * y
-        self.position_x +=  math.cos(angle + math.radians(90)) * x
-        self.position_y += -math.sin(angle +  math.radians(90)) * x
+        self.position_x += math.cos(angle + math.radians(90)) * x
+        self.position_y += -math.sin(angle + math.radians(90)) * x
 
 
-    def setPosition(self,x,y, angle):
+    def setPosition(self, x, y, angle):
         self.position_x = x
         self.position_y = y
         self.angle = angle
