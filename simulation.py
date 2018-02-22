@@ -42,7 +42,7 @@ class Simulation:
 
     def run(self):
         for i in range(self.soldiers_number):
-            self.soldiers.append(Soldier(randrange(500,1500),randrange(250,750),""))
+            self.soldiers.append(Soldier(randrange(750,1250),randrange(250,750),""))
             self.soldiers[i].health = 1
             if(i % 2 == 0): self.soldiers[i].team = "red"
             else:           self.soldiers[i].team = "blue"
@@ -50,7 +50,7 @@ class Simulation:
         generation = 0
         while True:
             print("Generation number : {}".format(generation))
-            print("Press (G) to enable graphics (disables multithreading)") 
+            print("Press (G) to enable graphics (disables multithreading)")
             for sol in self.soldiers:
                 sol.kills = 0
             fights = []
@@ -84,21 +84,23 @@ class Simulation:
 
 
 
-
+            average_steps = 0
             for f in fights:
                 p = f[0]
                 q = f[1]
                 sol = f[2]
                 opponent = f[3]
-                kills_sol, kills_opponent = q.get()
+                kills_sol, kills_opponent, steps = q.get()
                 sol.kills += kills_sol
                 opponent.kills += kills_opponent
+                average_steps += steps
                 if(f[4]): p.join()
+            average_steps /= len(fights)
 
-
-
+            print(chr(27) + "[2J")
             print("")
             print("--------- Generation overview ---------- ")
+            print("Average steps to kill : {}".format(average_steps))
 
             self.soldiers = sorted(self.soldiers, key=lambda sol: sol.kills, reverse=True)
 
@@ -163,7 +165,7 @@ class Simulation:
                         el.last_hurter.kills -= 1
 
         bullets = []
-        que.put((soldiers[0].kills, soldiers[1].kills))
+        que.put((soldiers[0].kills, soldiers[1].kills, step))
         print('.', end='', flush=True)
 
 
