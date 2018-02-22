@@ -1,5 +1,6 @@
 import pygame
 import copy
+import time
 from multiprocessing import Process, Queue
 from pygame.locals import *
 from intelligentsoldier import Soldier
@@ -54,6 +55,7 @@ class Simulation:
             for sol in self.soldiers:
                 sol.kills = 0
             fights = []
+            time_beggining = time.time()
             for sol in self.soldiers:
                 for opponent in self.soldiers:
                     if opponent is not sol:
@@ -66,8 +68,8 @@ class Simulation:
                         opponent.health = 1
                         sol.team = "red"
                         opponent.team = "blue"
-                        sol.setPosition(randrange(500,1500),randrange(250,750),0)
-                        opponent.setPosition(randrange(500,1500),randrange(250,750),0)
+                        sol.setPosition(randrange(750,1250),randrange(250,750),0)
+                        opponent.setPosition(randrange(750,1250),randrange(250,750),0)
 
                         que = Queue()
                         p = Process()
@@ -96,11 +98,12 @@ class Simulation:
                 average_steps += steps
                 if(f[4]): p.join()
             average_steps /= len(fights)
-
+            average_steps = round(average_steps, 0)
+            generation_time = round(time.time() - time_beggining,2)
             print(chr(27) + "[2J")
             print("")
-            print("--------- Generation overview ---------- ")
-            print("Average steps to kill : {}".format(average_steps))
+            print("--------- Generation overview : ({}) seconds ---------- ".format(generation_time))
+            print("Average steps to kill : ({}/1250)".format(average_steps))
 
             self.soldiers = sorted(self.soldiers, key=lambda sol: sol.kills, reverse=True)
 
@@ -109,7 +112,7 @@ class Simulation:
             ponderated_soldiers = []
 
             for sol in self.soldiers:
-                for i in range(sol.kills * 3): ponderated_soldiers.append(sol)
+                for i in range(sol.kills **3): ponderated_soldiers.append(sol)
             if(len(ponderated_soldiers) != 0):
                 for i in range(self.soldiers_number):
                     if(len(ponderated_soldiers) != 0):
