@@ -182,7 +182,7 @@ class Simulation:
 
         self.screen.fill([0, 0, 0])
         for el in bullets:
-            pygame.draw.line(self.screen, [255,0,0], (el.pos.x, el.pos.y), (el.pos.x + el.move.x, el.pos.y + el.move.y))
+            pygame.draw.line(self.screen, [255,0,0], (el.pos.x, el.pos.y), (el.pos.x + el.move.x, el.pos.y + el.move.y), 5)
 
         for el in soldiers:
             if(el.team == "red"):
