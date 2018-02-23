@@ -25,6 +25,7 @@ class Simulation:
         self.graphics = False
         self.soldiers_number = 10
 
+        self.framerate = 60
         if(self.graphics): self.initGraphics()
 
 
@@ -129,6 +130,7 @@ class Simulation:
         stop = False
         bullets = []
         while step < 1250 and not stop:
+            time_start = time.time()
             step += 1
 
             if(self.graphics):
@@ -166,6 +168,10 @@ class Simulation:
                         el.last_hurter.kills += 1
                     else:
                         el.last_hurter.kills -= 1
+            if(self.graphics):
+                while(time.time() - time_start < 1 / self.framerate):
+                    time.sleep(0.01)
+
 
         bullets = []
         que.put((soldiers[0].kills, soldiers[1].kills, step))
