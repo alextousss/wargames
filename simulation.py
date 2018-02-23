@@ -25,7 +25,7 @@ class Simulation:
         self.graphics = False
         self.soldiers_number = 10
 
-        self.framerate = 60
+        self.framerate = 150
         if(self.graphics): self.initGraphics()
 
 
