@@ -13,7 +13,7 @@ class FightingEntity:
         self.damage_caused = 0
         self.team = team
         self.last_hurter = self
-        self.updates_since_last_shot = 0
+        self.updates_since_last_shot = 5000
 
     def setTarget(self, target):
         self.target = target
