@@ -5,9 +5,10 @@ from bullet import Coord
 from fightingentity import FightingEntity
 
 
+
 class NeuralNetwork:
     def __init__(self):
-        self.input_layer_size = 2
+        self.input_layer_size = 4
         self.layers_size = [9, 7]
         self.bias_per_layer = 1
 
@@ -28,6 +29,13 @@ class NeuralNetwork:
         self.nearest_opponent_angle = 0
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
+
+    def toJSON(self):
+        output = []
+        for el in self.weights:
+            output.append(el.tolist())
+        return output
+
 
     def forwardPropagation(self, X):
         for i, w in enumerate(self.weights):
@@ -78,6 +86,10 @@ class Soldier(FightingEntity):
         self.nearest_opponent_angle = 0
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
+        self.nearest_opponent = self
+
+    def toJSON(self):
+        return self.neurons.toJSON()
 
 
     def giveEnvironnement(self, soldiers):
@@ -113,6 +125,7 @@ class Soldier(FightingEntity):
                 else:
                     if(self.nearest_opponent_distance == 0
                        or self.nearest_opponent_distance > distance):
+                        self.nearest_opponent = sol
                         self.nearest_opponent_distance = distance
                         self.nearest_opponent_angle = angle
 
@@ -128,8 +141,12 @@ class Soldier(FightingEntity):
 
     def update(self):
         FightingEntity.update(self)
-        neural_input = np.array([(self.nearest_opponent_angle) / 45,
-                                self.nearest_opponent_distance / 150])
+        neural_input = np.array([(
+                            self.nearest_opponent_angle) / 45,
+                            self.nearest_opponent_distance / 150,
+                            self.updates_since_last_shot / 200,
+                            self.nearest_opponent.updates_since_last_shot / 200
+                            ])
 
         neural_output = self.neurons.forwardPropagation(neural_input)
         if(neural_output[0] > 0):
