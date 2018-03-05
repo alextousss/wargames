@@ -56,7 +56,7 @@ class DarwinSelection:
             average_steps = 0
             results = []
 
-            pool = Pool()
+            pool = Pool(6)
             results = pool.map(launchSimulation, copy.deepcopy(fights))
 
             for i, result in enumerate(results):

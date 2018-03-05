@@ -38,8 +38,7 @@ class Display:
                     while True and not stop:
                         time_start = time.time()
 
-                        while(time.time() - time_start < 1 / self.framerate):
-                            time.sleep(0.01)
+
                         self.sim.update()
 
                         self.draw(self.sim.soldiers, self.sim.bullets)
