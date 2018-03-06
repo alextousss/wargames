@@ -82,7 +82,7 @@ class DarwinSelection:
             ponderated_soldiers = []
 
             for sol in self.soldiers:
-                for i in range(sol.kills ** 4):
+                for i in range(sol.kills):
                     ponderated_soldiers.append(sol)
             if(len(ponderated_soldiers) != 0):
                 for i in range(self.soldiers_number):
