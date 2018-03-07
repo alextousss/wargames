@@ -9,7 +9,7 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 4
-        self.layers_size = [9, 7]
+        self.layers_size = [9, 9, 7]
         self.bias_per_layer = 1
 
         self.weights = []
@@ -30,11 +30,7 @@ class NeuralNetwork:
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
 
-    def toJSON(self):
-        output = []
-        for el in self.weights:
-            output.append(el.tolist())
-        return output
+
 
 
     def forwardPropagation(self, X):
