@@ -37,8 +37,6 @@ class Display:
                     self.sim.giveSoldiers([sol1, sol2])
                     stop = False
                     while True and not stop:
-
-
                         self.sim.update()
                         stop = self.sim.stop
                         self.draw(self.sim.soldiers, self.sim.bullets)
