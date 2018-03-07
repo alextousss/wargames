@@ -14,10 +14,10 @@ def launchSimulation(soldiers):
 class DarwinSelection:
     def __init__(self):
         self.keyboard = KBHit()
-        self.soldiers_number = 10
+        self.soldiers_number = 20
         self.soldiers = []
         self.generation = 0
-
+        self.pow_proba = 2
         self.sim = Simulation()
 
         for i in range(self.soldiers_number):
@@ -76,14 +76,19 @@ class DarwinSelection:
             self.soldiers = sorted(self.soldiers,
                                    key=lambda sol: sol.kills,
                                    reverse=True)
+            total_probability = 0
+            for sol in self.soldiers:
+                total_probability += sol.kills ** self.pow_proba
 
             for i, sol in enumerate(self.soldiers):
-                print("{} did {} kills !".format(i, sol.kills))
+                print("{} did {} kills ! {}/100".format(i, sol.kills, round(((sol.kills ** self.pow_proba)/ total_probability) * 100), 2))
+
             ponderated_soldiers = []
 
             for sol in self.soldiers:
-                for i in range(sol.kills):
+                for i in range(sol.kills ** self.pow_proba):
                     ponderated_soldiers.append(sol)
+
             if(len(ponderated_soldiers) != 0):
                 for i in range(self.soldiers_number):
                     if(len(ponderated_soldiers) != 0):
@@ -93,8 +98,14 @@ class DarwinSelection:
                             )
                 for i in range(self.soldiers_number):
                     self.soldiers.pop(0)
-                for sol in self.soldiers:
-                    sol.mutate(0.10)
+
+                self.soldiers = sorted(self.soldiers,
+                                       key=lambda sol: sol.kills,
+                                       reverse=True)
+
+                for i, sol in enumerate(self.soldiers):
+                    if(i != 0):
+                        sol.mutate(0.10)
             generation += 1
 
 
