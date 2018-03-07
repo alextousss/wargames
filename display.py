@@ -48,7 +48,7 @@ class Display:
                                 pygame.quit()
                             if event.type == KEYDOWN and event.key == K_s:
                                 stop = True
-                            if event.type == KEYDOWN and event.key == K_escape:
+                            if event.type == KEYDOWN and event.key == K_ESCAPE:
                                 quit()
 
 
