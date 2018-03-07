@@ -9,7 +9,7 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 4
-        self.layers_size = [9, 9, 7]
+        self.layers_size = [15, 7]
         self.bias_per_layer = 1
 
         self.weights = []
@@ -18,11 +18,11 @@ class NeuralNetwork:
             if(i == 0):
                 self.weights.append(np.random.randn(self.input_layer_size
                                                     + self.bias_per_layer,
-                                                    layer))
+                                                    layer) * 0.01)
             else:
                 self.weights.append(np.random.randn(self.layers_size[i-1]
                                                     + self.bias_per_layer,
-                                                    layer))
+                                                    layer) * 0.01)
 
         print(self.weights)
         self.nearest_opponent_distance = 0
