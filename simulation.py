@@ -13,23 +13,28 @@ def launchSimulation(soldiers):
     return sim.simulateOneGame(copy.deepcopy(soldiers))
 
 class DarwinSelection:
-    def __init__(self):
+    def __init__(self, soldiers_file=None):
         self.keyboard = KBHit()
         self.soldiers_number = 10
         self.soldiers = []
         self.generation = 0
-        self.pow_proba = 2
+        self.pow_proba = 4
         self.sim = Simulation()
 
-        for i in range(self.soldiers_number):
-            self.soldiers.append(Soldier(randrange(750, 1250),
-                                         randrange(250, 750),
-                                         ""))
-            self.soldiers[i].health = 1
-            if(i % 2 == 0):
-                self.soldiers[i].team = "red"
-            else:
-                self.soldiers[i].team = "blue"
+        if soldiers_file == None:
+            for i in range(self.soldiers_number):
+                self.soldiers.append(Soldier(randrange(750, 1250),
+                                             randrange(250, 750),
+                                             ""))
+                self.soldiers[i].health = 1
+                if(i % 2 == 0):
+                    self.soldiers[i].team = "red"
+                else:
+                    self.soldiers[i].team = "blue"
+        else:
+            with open(soldiers_file, 'rb') as f:
+                self.soldiers = pickle.load(f)
+                self.soldiers_number = len(self.soldiers)
 
         self.save_id = 0
         if not os.path.exists("saves"):
@@ -46,6 +51,9 @@ class DarwinSelection:
     def run(self):
         generation = 0
         while True:
+            if generation % 10 == 0:
+                self.save(generation)
+
             print("Generation number : {}".format(generation))
             print("Press (S) to save the current state ")
             print("Press (Q) to quit and save ")
@@ -72,7 +80,7 @@ class DarwinSelection:
             average_steps = 0
             results = []
 
-            pool = Pool()
+            pool = Pool(processes=10)
             results = pool.map(launchSimulation, copy.deepcopy(fights))
             pool.close()
 

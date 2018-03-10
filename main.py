@@ -10,15 +10,17 @@ if __name__ == '__main__':
     else:
         if sys.argv[1] == "-simulate":
             from simulation import DarwinSelection
-
-            sel = DarwinSelection()
+            if(len(sys.argv) > 2):
+                sel = DarwinSelection(sys.argv[2])
+            else:
+                sel = DarwinSelection()
             sel.run()
 
         elif sys.argv[1] == "-display":
-            from display import Display
             if len(sys.argv) < 3:
                 print("Please specify file !")
                 quit()
+            from display import Display
             dis = Display(sys.argv[2])
             dis.run()
         else:
