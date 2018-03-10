@@ -27,8 +27,10 @@ class Display:
             self.soldiers = pickle.load(f)
         self.sim = Simulation()
         self.last_frame_time = time.time()
+        self.last_display_time = time.time()
         self.framerate = 150
-
+        self.displayrate = 20
+    
     def run(self):
         for sol1 in self.soldiers:
             for sol2 in self.soldiers:
@@ -56,17 +58,19 @@ class Display:
         while time.time() - self.last_frame_time < 1/self.framerate:
             pass
         self.last_frame_time = time.time()
-        self.screen.fill([0, 0, 0])
-        for el in bullets:
-            pygame.draw.line(self.screen, [255,0,0], (el.pos.x, el.pos.y), (el.pos.x + el.move.x, el.pos.y + el.move.y), 5)
+        if(time.time() - self.last_display_time < 1/self.displayrate:
+            self.last_display_time = time.time()
+            self.screen.fill([0, 0, 0])
+            for el in bullets:
+                pygame.draw.line(self.screen, [255,0,0], (el.pos.x, el.pos.y), (el.pos.x + el.move.x, el.pos.y + el.move.y), 5)
 
-        for el in soldiers:
-            if(el.team == "red"):
-                sprite = pygame.transform.scale(self.red_entity_img, (50,50))
-            else:
-                sprite = pygame.transform.scale(self.blue_entity_img, (50,50))
+            for el in soldiers:
+                if(el.team == "red"):
+                    sprite = pygame.transform.scale(self.red_entity_img, (50,50))
+                else:
+                    sprite = pygame.transform.scale(self.blue_entity_img, (50,50))
 
-            sprite = rot_center(sprite, el.angle)
-            self.screen.blit(sprite, (el.position_x - sprite.get_width() / 2, el.position_y - sprite.get_height() / 2))
+                sprite = rot_center(sprite, el.angle)
+                self.screen.blit(sprite, (el.position_x - sprite.get_width() / 2, el.position_y - sprite.get_height() / 2))
 
-        pygame.display.flip()
+            pygame.display.flip()
