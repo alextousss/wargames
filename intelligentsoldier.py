@@ -24,7 +24,6 @@ class NeuralNetwork:
                                                     + self.bias_per_layer,
                                                     layer) * 0.01)
 
-        print(self.weights)
         self.nearest_opponent_distance = 0
         self.nearest_opponent_angle = 0
         self.nearest_friend_distance = 0
@@ -83,9 +82,6 @@ class Soldier(FightingEntity):
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
         self.nearest_opponent = self
-
-    def toJSON(self):
-        return self.neurons.toJSON()
 
 
     def giveEnvironnement(self, soldiers):
