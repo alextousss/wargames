@@ -14,7 +14,7 @@ def launchSimulation(soldiers):
 class DarwinSelection:
     def __init__(self):
         self.keyboard = KBHit()
-        self.soldiers_number = 2
+        self.soldiers_number = 10
         self.soldiers = []
         self.generation = 0
         self.pow_proba = 2
