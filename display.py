@@ -6,7 +6,7 @@ import pygame
 from pygame.locals import *
 
 def rot_center(image, angle):
-    """rotate an image while keeping its center and size""" #Coming from : https://www.pygame.org/wiki/RotateCenter
+    """rotate an image while keeping its center and size""" # Coming from : https://www.pygame.org/wiki/RotateCenter
     orig_rect = image.get_rect()
     rot_image = pygame.transform.rotate(image, angle)
     rot_rect = orig_rect.copy()
@@ -16,21 +16,21 @@ def rot_center(image, angle):
 
 
 class Display:
-    def __init__(self, file):
+    def __init__(self, soldiers_file):
         pygame.init()
         pygame.key.set_repeat(50, 50)
 
         self.screen = pygame.display.set_mode()
         self.red_entity_img = pygame.image.load("img/red_turret.png").convert_alpha()
         self.blue_entity_img = pygame.image.load("img/blue_turret.png").convert_alpha()
-        with open(file, 'rb') as f:
+        with open(soldiers_file, 'rb') as f:
             self.soldiers = pickle.load(f)
         self.sim = Simulation()
         self.last_frame_time = time.time()
         self.last_display_time = time.time()
         self.framerate = 150
-        self.displayrate = 20
-    
+        self.displayrate = 60
+
     def run(self):
         for sol1 in self.soldiers:
             for sol2 in self.soldiers:
@@ -53,12 +53,12 @@ class Display:
                             if event.type == KEYDOWN and event.key == K_ESCAPE:
                                 quit()
 
-
     def draw(self, soldiers, bullets):
         while time.time() - self.last_frame_time < 1/self.framerate:
             pass
         self.last_frame_time = time.time()
-        if time.time() - self.last_display_time < 1/self.displayrate:
+
+        if time.time() - self.last_display_time > 1/self.displayrate:
             self.last_display_time = time.time()
             self.screen.fill([0, 0, 0])
             for el in bullets:
@@ -71,6 +71,7 @@ class Display:
                     sprite = pygame.transform.scale(self.blue_entity_img, (50,50))
 
                 sprite = rot_center(sprite, el.angle)
-                self.screen.blit(sprite, (el.position_x - sprite.get_width() / 2, el.position_y - sprite.get_height() / 2))
+                self.screen.blit(sprite, (el.position_x - sprite.get_width() / 2,
+                                          el.position_y - sprite.get_height() / 2))
 
             pygame.display.flip()
