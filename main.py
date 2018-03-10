@@ -16,8 +16,10 @@ if __name__ == '__main__':
 
         elif sys.argv[1] == "-display":
             from display import Display
-
-            dis = Display()
+            if len(sys.argv) < 3:
+                print("Please specify file !")
+                quit()
+            dis = Display(sys.argv[2])
             dis.run()
         else:
             print("Usage : ")

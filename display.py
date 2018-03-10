@@ -16,14 +16,14 @@ def rot_center(image, angle):
 
 
 class Display:
-    def __init__(self):
+    def __init__(self, file):
         pygame.init()
         pygame.key.set_repeat(50, 50)
 
-        self.screen = pygame.display.set_mode((1600, 900))
+        self.screen = pygame.display.set_mode()
         self.red_entity_img = pygame.image.load("img/red_turret.png").convert_alpha()
         self.blue_entity_img = pygame.image.load("img/blue_turret.png").convert_alpha()
-        with open('file', 'rb') as f:
+        with open(file, 'rb') as f:
             self.soldiers = pickle.load(f)
         self.sim = Simulation()
         self.last_frame_time = time.time()
