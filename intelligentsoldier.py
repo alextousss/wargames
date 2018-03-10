@@ -5,7 +5,6 @@ from bullet import Coord
 from fightingentity import FightingEntity
 
 
-
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 4
@@ -29,9 +28,6 @@ class NeuralNetwork:
         self.nearest_friend_distance = 0
         self.nearest_friend_angle = 0
 
-
-
-
     def forwardPropagation(self, X):
         for i, w in enumerate(self.weights):
             if(i == 0):
@@ -50,7 +46,6 @@ class NeuralNetwork:
 
         return y_hat
 
-
     def mutate(self, mutation_factor):
         weight_number = 0
         for i, layer in enumerate(self.layers_size):
@@ -67,7 +62,7 @@ class NeuralNetwork:
         for w in self.weights:
             for (x, y), el in np.ndenumerate(w):
                 if(random.random() < proba):
-                    w[x, y] = random.uniform(-2.0,2.0)
+                    w[x, y] = random.uniform(-2.0, 2.0)
 
     def sigmoid(self, z):
         return 1/(2+np.exp(-z))
