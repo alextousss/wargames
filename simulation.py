@@ -5,6 +5,7 @@ from intelligentsoldier import Soldier
 from bullet import Bullet
 from getch import KBHit
 from random import randrange
+import os
 import pickle
 
 def launchSimulation(soldiers):
@@ -30,17 +31,32 @@ class DarwinSelection:
             else:
                 self.soldiers[i].team = "blue"
 
+        self.save_id = 0
+        if not os.path.exists("saves"):
+            os.makedirs("saves")
+        while os.path.exists("saves/save_" + str(self.save_id)):
+            self.save_id += 1
+        os.makedirs("saves/save_" + str(self.save_id))
+
+    def save(self, generation):
+        with open('saves/save_' + str(self.save_id) + "/" + str(generation), 'wb') as f:
+            pickle.dump(self.soldiers, f)
+            print("Successfull save!!!")
+
     def run(self):
         generation = 0
         while True:
             print("Generation number : {}".format(generation))
             print("Press (S) to save the current state ")
-            if(self.keyboard.kbhit()):
-                if( self.keyboard.getch() == "s"):
-                    with open('file', 'wb') as f:
-                        pickle.dump(self.soldiers, f)
-                        print("Successfull save!!!")
+            print("Press (Q) to quit and save ")
 
+            if(self.keyboard.kbhit()):
+                char = self.keyboard.getch()
+                if(char == "s"):
+                    self.save(generation)
+                elif(char == "q"):
+                    self.save(generation)
+                    quit()
 
             for sol in self.soldiers:
                 sol.kills = 0
