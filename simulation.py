@@ -14,7 +14,7 @@ def launchSimulation(soldiers):
 class DarwinSelection:
     def __init__(self):
         self.keyboard = KBHit()
-        self.soldiers_number = 20
+        self.soldiers_number = 2
         self.soldiers = []
         self.generation = 0
         self.pow_proba = 2
@@ -150,14 +150,13 @@ class Simulation:
             bullet.update()
 
         for el in self.soldiers:
-
             el.giveEnvironnement(self.soldiers)
             el.update()
             if(el.shooting and el.updates_since_last_shot > 200):
                 el.updates_since_last_shot = 0
                 self.bullets.append(Bullet(el.position_x,
                                     el.position_y,
-                                    100,
+                                    10,
                                     el.angle + 90,
                                     el))
             if(el.health < 0):
