@@ -8,7 +8,7 @@ if __name__ == '__main__':
         print("\t-display to display the result")
         print("\t-simulate to launch simulation")
     else:
-        if sys.argv[1] == "simulate":
+        if sys.argv[1] == "-simulate":
             from simulation import DarwinSelection
 
             sel = DarwinSelection()
@@ -19,3 +19,7 @@ if __name__ == '__main__':
 
             dis = Display()
             dis.run()
+        else:
+            print("Usage : ")
+            print("\t-display to display the result")
+            print("\t-simulate to launch simulation")
