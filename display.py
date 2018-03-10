@@ -58,7 +58,7 @@ class Display:
         while time.time() - self.last_frame_time < 1/self.framerate:
             pass
         self.last_frame_time = time.time()
-        if(time.time() - self.last_display_time < 1/self.displayrate:
+        if time.time() - self.last_display_time < 1/self.displayrate:
             self.last_display_time = time.time()
             self.screen.fill([0, 0, 0])
             for el in bullets:
