@@ -18,7 +18,7 @@ class DarwinSelection:
         self.soldiers_number = 10
         self.soldiers = []
         self.generation = 0
-        self.pow_proba = 4
+        self.pow_proba = 2
         self.sim = Simulation()
 
         if soldiers_file == None:
@@ -27,10 +27,7 @@ class DarwinSelection:
                                              randrange(250, 750),
                                              ""))
                 self.soldiers[i].health = 1
-                if(i % 2 == 0):
-                    self.soldiers[i].team = "red"
-                else:
-                    self.soldiers[i].team = "blue"
+
         else:
             with open(soldiers_file, 'rb') as f:
                 self.soldiers = pickle.load(f)
@@ -80,7 +77,7 @@ class DarwinSelection:
             average_steps = 0
             results = []
 
-            pool = Pool(processes=10)
+            pool = Pool()
             results = pool.map(launchSimulation, copy.deepcopy(fights))
             pool.close()
 
@@ -110,61 +107,83 @@ class DarwinSelection:
             ponderated_soldiers = []
 
             for sol in self.soldiers:
-                for i in range(sol.kills ** self.pow_proba):
-                    ponderated_soldiers.append(sol)
+                if(sol.kills > 0):
+                    for i in range((sol.kills) ** self.pow_proba):
+                        ponderated_soldiers.append(sol)
+                else:
+                        ponderated_soldiers.append(Soldier(0,0,"none"))
 
-            if(len(ponderated_soldiers) != 0):
-                for i in range(self.soldiers_number):
-                    if(len(ponderated_soldiers) != 0):
-                        index = randrange(0, len(ponderated_soldiers))
-                        self.soldiers.append(copy.deepcopy(
-                            ponderated_soldiers[index - 1])
-                            )
-                for i in range(self.soldiers_number):
-                    self.soldiers.pop(0)
+            self.soldiers = []
+            for i in range(self.soldiers_number):
+                index = randrange(0, len(ponderated_soldiers))
+                self.soldiers.append(copy.deepcopy(
+                    ponderated_soldiers[index - 1])
+                    )
 
-                self.soldiers = sorted(self.soldiers,
-                                       key=lambda sol: sol.kills,
-                                       reverse=True)
+            self.soldiers = sorted(self.soldiers,
+                                   key=lambda sol: sol.kills,
+                                   reverse=True)
 
-                for i, sol in enumerate(self.soldiers):
-                    if(i != 0):
-                        sol.mutate(0.10)
+            for i, sol in enumerate(self.soldiers):
+                if(i != 0):
+                    sol.mutate(0.10)
+                    
             generation += 1
 
 
 class Simulation:
     def __init__(self):
-
         self.soldiers = []
+        self.blue_team_kills = 0
+        self.red_team_kills = 0
         self.bullets = []
         self.state = 0
         self.stop = False
 
-    def giveSoldiers(self, soldiers):
-        self.soldiers = soldiers
+    def giveSoldiers(self, soldiers, player_number):
+        player_number = 2
         for i, sol in enumerate(soldiers):
+            for y in range(player_number):
+                if(i % 2 == 0):
+                    sol.team = "red"
+                else:
+                    sol.team = "blue"
+
+                self.soldiers.append(copy.deepcopy(sol))
+
+        for i, sol in enumerate(self.soldiers):
+            if(sol.team == "red"):
+                sol.setPosition(750,
+                                randrange(250, 750),
+                                0)
+                sol.angle = 90
+            elif(sol.team == "blue"):
+                sol.setPosition(1250,
+                                randrange(250, 750),
+                                0)
+                sol.angle = 240
+
             sol.kills = 0
-            sol.setPosition(randrange(750, 1250),
-                            randrange(250, 750),
-                            0)
             sol.health = 1
-            if(i % 2 == 0):
-                sol.team = "red"
-            else:
-                sol.team = "blue"
 
     def simulateOneGame(self, soldiers):
-        self.giveSoldiers(soldiers)
+        self.giveSoldiers(soldiers, 1)
         step = 0
         self.stop = False
         while step < 1250 and not self.stop:
             self.update()
             step += 1
         print('.', end='', flush=True)
-        return self.soldiers[0].kills, self.soldiers[1].kills, step
+        return self.red_team_kills, self.blue_team_kills, step
 
     def update(self):
+        blue_team_alive_soldiers = 0
+        red_team_alive_soldiers = 0
+        for sol in self.soldiers:
+            if   sol.team == "red": red_team_alive_soldiers += 1
+            elif sol.team == "blue": blue_team_alive_soldiers += 1
+        if blue_team_alive_soldiers == 0 or red_team_alive_soldiers == 0:
+            self.stop = True
         for bullet in self.bullets:
             for el in self.soldiers:
                 if(bullet.intersectsWithCircle(el.position_x, el.position_y, 25) and bullet.shooter is not el):
@@ -184,8 +203,16 @@ class Simulation:
                                     el.angle + 90,
                                     el))
             if(el.health < 0):
-                self.stop = True
                 if(el.team != el.last_hurter.team):
+                    if(el.last_hurter.team == "red"):
+                        self.red_team_kills += 1
+                    elif(el.last_hurter.team == "blue"):
+                        self.blue_team_kills += 1
                     el.last_hurter.kills += 1
                 else:
+                    if(el.last_hurter.team == "red"):
+                        self.red_team_kills -= 1
+                    elif(el.last_hurter.team == "blue"):
+                        self.blue_team_kills -= 1
                     el.last_hurter.kills -= 1
+                self.soldiers.remove(el)
