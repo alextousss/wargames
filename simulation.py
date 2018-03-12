@@ -15,7 +15,7 @@ def launchSimulation(soldiers):
 class DarwinSelection:
     def __init__(self, soldiers_file=None):
         self.keyboard = KBHit()
-        self.soldiers_number = 10
+        self.soldiers_number = 20
         self.soldiers = []
         self.generation = 0
         self.pow_proba = 4
@@ -26,7 +26,7 @@ class DarwinSelection:
                 self.soldiers.append(Soldier(randrange(750, 1250),
                                              randrange(250, 750),
                                              ""))
-                self.soldiers[i].health = 1
+                self.soldiers[i].health = 14
                 if(i % 2 == 0):
                     self.soldiers[i].team = "red"
                 else:
@@ -80,7 +80,7 @@ class DarwinSelection:
             average_steps = 0
             results = []
 
-            pool = Pool(processes=10)
+            pool = Pool()
             results = pool.map(launchSimulation, copy.deepcopy(fights))
             pool.close()
 
@@ -148,7 +148,7 @@ class Simulation:
             sol.setPosition(randrange(750, 1250),
                             randrange(250, 750),
                             0)
-            sol.health = 1
+            sol.health = 14
             if(i % 2 == 0):
                 sol.team = "red"
             else:

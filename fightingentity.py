@@ -6,7 +6,7 @@ class FightingEntity:
         self.position_x = x_pos
         self.position_y = y_pos
         self.angle = 0
-        self.health = 1
+        self.health = 14
         self.target = self
         self.shooting = False
         self.kills = 0
