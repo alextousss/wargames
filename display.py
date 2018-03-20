@@ -36,7 +36,7 @@ class Display:
             for sol2 in self.soldiers:
                 if sol1 is not sol2:
                     self.sim = Simulation()
-                    self.sim.giveSoldiers([sol1, sol2])
+                    self.sim.giveSoldiers([sol1, sol2], 1)
                     stop = False
                     while True and not stop:
                         self.sim.update()
