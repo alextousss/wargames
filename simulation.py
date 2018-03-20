@@ -180,7 +180,7 @@ class Simulation:
                 el.updates_since_last_shot = 0
                 self.bullets.append(Bullet(el.position_x,
                                     el.position_y,
-                                    10,
+                                    50,
                                     el.angle + 90,
                                     el))
             if(el.health < 0):
