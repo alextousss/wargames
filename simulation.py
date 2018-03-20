@@ -26,16 +26,13 @@ class DarwinSelection:
                 self.soldiers.append(Soldier(randrange(750, 1250),
                                              randrange(250, 750),
                                              ""))
-<<<<<<< HEAD
                 self.soldiers[i].health = 14
                 if(i % 2 == 0):
                     self.soldiers[i].team = "red"
                 else:
                     self.soldiers[i].team = "blue"
-=======
-                self.soldiers[i].health = 1
 
->>>>>>> 0f414f93a7c00907332e27e2fc8a6342ef3bac53
+
         else:
             with open(soldiers_file, 'rb') as f:
                 self.soldiers = pickle.load(f)
@@ -135,7 +132,7 @@ class DarwinSelection:
             for i, sol in enumerate(self.soldiers):
                 if(i != 0):
                     sol.mutate(0.10)
-                    
+
             generation += 1
 
 
@@ -172,7 +169,6 @@ class Simulation:
                 sol.angle = 240
 
             sol.kills = 0
-<<<<<<< HEAD
             sol.setPosition(randrange(750, 1250),
                             randrange(250, 750),
                             0)
@@ -181,9 +177,6 @@ class Simulation:
                 sol.team = "red"
             else:
                 sol.team = "blue"
-=======
-            sol.health = 1
->>>>>>> 0f414f93a7c00907332e27e2fc8a6342ef3bac53
 
     def simulateOneGame(self, soldiers):
         self.giveSoldiers(soldiers, 1)
