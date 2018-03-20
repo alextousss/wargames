@@ -7,8 +7,8 @@ from fightingentity import FightingEntity
 
 class NeuralNetwork:
     def __init__(self):
-        self.input_layer_size = 6
-        self.layers_size = [7]
+        self.input_layer_size = 4
+        self.layers_size = [9, 7]
         self.bias_per_layer = 1
 
         self.weights = []
@@ -62,7 +62,8 @@ class NeuralNetwork:
         for w in self.weights:
             for (x, y), el in np.ndenumerate(w):
                 if(random.random() < proba):
-                    w[x, y] = random.uniform(-3.0, 3.0)
+                    w[x, y] += random.uniform(-3.0, 3.0) / 10
+                    # we're only changing 10% of the current weight
 
     def sigmoid(self, z):
         return 1/(2+np.exp(-z))
@@ -131,8 +132,6 @@ class Soldier(FightingEntity):
         neural_input = np.array([
                             self.nearest_opponent_angle / 30,
                             self.nearest_opponent_distance / 125,
-                            self.nearest_friend_angle / 30,
-                            self.nearest_friend_distance / 125,
                             self.updates_since_last_shot / 50,
                             self.nearest_opponent.updates_since_last_shot / 50
                             ])

@@ -146,7 +146,7 @@ class Simulation:
         self.stop = False
 
     def giveSoldiers(self, soldiers, player_number):
-        player_number = 2
+        player_number = 1
         for i, sol in enumerate(soldiers):
             for y in range(player_number):
                 if(i % 2 == 0):
