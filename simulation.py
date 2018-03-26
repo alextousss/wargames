@@ -29,26 +29,26 @@ class Simulation:
                 self.soldiers.append(copy.deepcopy(sol))
 
         for i, sol in enumerate(self.soldiers):
-            if(sol.team == "red"):
+            if(i % 2 == 0):
+                sol.team = "red"
                 sol.setPosition(750,
                                 randrange(250, 750),
                                 0)
                 sol.angle = 90
-            elif(sol.team == "blue"):
+            else:
+                sol.team = "blue"
                 sol.setPosition(1250,
                                 randrange(250, 750),
                                 0)
                 sol.angle = 240
 
             sol.kills = 0
+            sol.health = 14
+
             sol.setPosition(randrange(750, 1250),
                             randrange(250, 750),
                             0)
-            sol.health = 14
-            if(i % 2 == 0):
-                sol.team = "red"
-            else:
-                sol.team = "blue"
+
 
     def simulateOneGame(self, soldiers):
         self.giveSoldiers(soldiers, 1)
