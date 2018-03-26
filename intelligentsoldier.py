@@ -1,4 +1,4 @@
-import random
+    import random
 import math
 import numpy as np
 from bullet import Coord
@@ -17,11 +17,11 @@ class NeuralNetwork:
             if(i == 0):
                 self.weights.append(np.random.randn(self.input_layer_size
                                                     + self.bias_per_layer,
-                                                    layer) * 0.01)
+                                                    layer))
             else:
                 self.weights.append(np.random.randn(self.layers_size[i-1]
                                                     + self.bias_per_layer,
-                                                    layer) * 0.01)
+                                                    layer))
 
         self.nearest_opponent_distance = 0
         self.nearest_opponent_angle = 0
