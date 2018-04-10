@@ -9,7 +9,7 @@ if __name__ == '__main__':
         print("\t-simulate to launch simulation")
     else:
         if sys.argv[1] == "-simulate":
-            from simulation import DarwinSelection
+            from darwinselection import DarwinSelection
             if(len(sys.argv) > 2):
                 sel = DarwinSelection(sys.argv[2])
             else:

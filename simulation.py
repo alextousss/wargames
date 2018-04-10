@@ -1,12 +1,7 @@
 import copy
-import time
-from multiprocessing import Pool
 from intelligentsoldier import Soldier
 from bullet import Bullet
-from getch import KBHit
 from random import randrange
-import os
-import pickle
 
 class Simulation:
     def __init__(self):
