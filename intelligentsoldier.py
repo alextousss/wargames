@@ -8,7 +8,7 @@ from fightingentity import FightingEntity
 class NeuralNetwork:
     def __init__(self):
         self.input_layer_size = 4
-        self.layers_size = [9, 7]
+        self.layers_size = [7]
         self.bias_per_layer = 1
 
         self.weights = []
