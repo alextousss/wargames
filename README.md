@@ -18,6 +18,10 @@ Their chance to reproduce and give birth to beautifull little mutated AI's is eq
 ### Results
 It seems that this approach ... works ! On the first generations, the AI's barely moves, and, generation after generation, they start to try differents moves .. They approach or avoid the ennemy, are trying to scope ...
 
+#### Screenshot :
+![screenshot](https://i.imgur.com/86Tvkys.png)
+
+
 ### Dependencies
 The game needs : 
 - Python 3
