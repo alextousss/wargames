@@ -1,22 +1,22 @@
 # wargames
 
 Two soldiers shooting at each other, controlled by a neural network with a genetic algorithm.
-What is quite interesting here, is that they both learn how to fight during the training process. The AIs are learning by playing a lot of games, but never sees a human player telling her how to kill the other AI.
+They both learn how to fight during the training process. The AIs are learning by playing a lot of games, but never see a human player telling it how to kill the other AI.
 
 
 
 ### Inputs
-The only informations the AI gets is the distance relative to the other one, the corresponding angle and the number of updates since both shooted.
+The only informations an AI gets is the distance relative to its opponent, the corresponding angle and the number of updates since its last shot.
 
 ### Neural Network
-Then, thoses inputs are processed by a single hidden layer neural network with 1 bias per layer. The adjustement of this bias value by the algorithm leads to anticipation of the future position of the ennemy IA, this is over-learning but it is quite interesting
+This data is processed by a single hidden layer neural network with 1 bias per layer. The adjustement of this bias value by the algorithm leads to anticipation of the future position of the ennemy AI (overfitting?).
 
 ### Genetic Algorithm
-The AI's are getting a personnal score, which is the number of kills they made on a tournament with all the other AI's
-Their chance to reproduce and give birth to beautifull little mutated AI's is equel to ponderated score power a constant. Actually hard-coded at 2
+At each generation, a tournament assigns the score of each AI.
+The chance of an AI to reproduce and give birth to a mutated AI is proportional to the square of its score.
 
 ### Results
-It seems that this approach ... works ! On the first generations, the AI's barely moves, and, generation after generation, they start to try differents moves .. They approach or avoid the ennemy, are trying to scope ...
+It works! In the first generations, the AIs barely move, and, generation after generation, they try differents moves: they approach or avoid the ennemy, try to scope ...
 
 #### Screenshot :
 ![screenshot](https://i.imgur.com/86Tvkys.png)
@@ -29,16 +29,16 @@ The game needs :
 - Pygame (Only for the -display part)
 
 ### Usage:
-To train a new set of AI's, type : 
+To train a new set of AIs, type : 
 
 * python3 main.py -simulate 
 
-To continue the training of other AI's, type : 
+To continue the training of other AIs, type : 
 
-* python3 main.py -simulate <path to AI's>
+* python3 main.py -simulate <path to AIs>
 
 The default output of the save command is located at saves/save_{save_number}/{generation} \
 
-To watch what's doing a set of AI's, type : 
+To visualize a tournament with all the AIs: 
 
- * python3 main.py -display <path to AI's>
+ * python3 main.py -display <path to AIs>
